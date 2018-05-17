@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * Adapter for the list of articles
      */
     private ArticleAdapter mAdapter;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);   // (Use toolbarmain as per https://guides.codepath.com/android/using-the-app-toolbar
         setSupportActionBar(toolbar);
 //        getSupportActionBar().setTitle(null);
+
+        try {
+
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        } catch (NullPointerException ne) {
+
+            Log.e(TAG, ne.getMessage());
+
+        }
 
         //Initialise Custom Tabs
         mCustomTabsServiceConnection = new CustomTabsServiceConnection() {
