@@ -199,6 +199,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new ArticleLoader(this, uriBuilder.toString());
     }
 
+
+    // Info from https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
+    
     private String sectionsFormatted (Context context) {
         StringBuilder sb = new StringBuilder();
         String delim = "";
