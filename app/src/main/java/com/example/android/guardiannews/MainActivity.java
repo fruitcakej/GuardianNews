@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         uriBuilder.appendQueryParameter("api-key", "test");
 
         // Return the completed uri i.e. (With 3 default categories set in arrays.xml)
-        // Separator is | symbol. Need to implement append..
+        // Separator is | symbol.
         // https://content.guardianapis.com/search?
         // &section=world|technology|politics&format=json&show-fields=headline,thumbnail&show-tags=contributor&order-by=newest&api-key=test
 
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static ArrayList<String> getCategories(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ArrayList<String> sectionsArray = sharedPrefs.getString(context.getString(R.string.cat_sections_key),
+        ArrayList<String> sectionsArray = sharedPrefs.getStringSet(context.getString(R.string.cat_sections_key),
                 Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
 
         if (sectionsArray.isEmpty()) {
