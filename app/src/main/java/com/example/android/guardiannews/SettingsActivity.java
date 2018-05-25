@@ -7,7 +7,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -29,6 +28,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
+
+            Preference category = findPreference(getString(R.string.cat_sections_key));
+            bindPreferenceSummaryToValue(category);
         }
 
         @Override

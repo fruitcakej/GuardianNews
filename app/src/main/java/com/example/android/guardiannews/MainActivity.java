@@ -30,14 +30,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String LOG_TAG = MainActivity.class.getName();
     private static final String API_URL = "https://content.guardianapis.com/search?";
-//   "&section=technology&format=json&show-fields=headline,thumbnail&show-tags=contributor&order-by=newest&api-key=92a6bab1-7a9b-47ef-ba60-7475b986fafb";
 
     // Custom Tabs variables
     public static final String CUSTOM_TAB_PACKAGE_NAME = "com.android.chrome";
@@ -67,16 +68,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);   // (Use toolbarmain as per https://guides.codepath.com/android/using-the-app-toolbar
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle(null);
 
         try {
 
             getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         } catch (NullPointerException ne) {
-
             Log.e(TAG, ne.getMessage());
-
         }
 
         //Initialise Custom Tabs
@@ -121,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // So we know when the user has adjusted the query settings
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-
         //Check for internet connectivity
         ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -140,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals(getString(R.string.settings_min_articles_key)) ||
-                key.equals(getString(R.string.settings_order_by_key))){
+                key.equals(getString(R.string.settings_order_by_key)) ||
+                key.equals(getString(R.string.cat_sections_key))) {
+
             // Clear the View as a new query will be kicked off
             mAdapter.clearArticles();
 
@@ -170,8 +169,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         String orderBy  = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
-                getString(R.string.settings_order_by_default)
-        );
+                getString(R.string.settings_order_by_default));
+
+//        String section = sharedPrefs.getString(
+//                getString(R.string.cat_sections_key),
+//                String.valueOf(R.array.cat_section_default_values));  // Not working as is array not string?
+
 
         // parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(API_URL);
@@ -180,19 +183,47 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         // Append query parameter and its value. For example, the `format=json`
-        uriBuilder.appendQueryParameter("section", "technology");
+        uriBuilder.appendQueryParameter("section", sectionsFormatted(getApplicationContext()));
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("show-fields", "headline,thumbnail");
         uriBuilder.appendQueryParameter("show-tags", "contributor");
         uriBuilder.appendQueryParameter("page-size", pageSize);
         uriBuilder.appendQueryParameter("order-by", orderBy);
-        uriBuilder.appendQueryParameter("api-key", "92a6bab1-7a9b-47ef-ba60-7475b986fafb");
+        uriBuilder.appendQueryParameter("api-key", "test");
 
-        // Return the completed uri `https://content.guardianapis.com/search?
-        // &section=technology&format=json&show-fields=headline,thumbnail&show-tags=contributor&order-by=newest&api-key=test
+        // Return the completed uri i.e. (With 3 default categories set in arrays.xml)
+        // Separator is | symbol. Need to implement append..
+        // https://content.guardianapis.com/search?
+        // &section=world|technology|politics&format=json&show-fields=headline,thumbnail&show-tags=contributor&order-by=newest&api-key=test
+
         return new ArticleLoader(this, uriBuilder.toString());
-
     }
+
+    private static ArrayList<String> getCategories(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        ArrayList<String> sectionsArray = sharedPrefs.getString(context.getString(R.string.cat_sections_key),
+                Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
+
+        if (sectionsArray.isEmpty()) {
+            ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
+            sectionsArray.addAll(cat_defaults);
+        }
+        return sectionsArray;
+    }
+
+
+    private static String sectionsFormatted(Context context) {
+        StringBuilder sectionsSeparator = new StringBuilder();
+        ArrayList<String> sections = getCategories(context);
+        int size = sections.size();
+        for (int i = 0; i < size - 1; i++) {
+            sectionsSeparator.append(sections.get(i));
+            sectionsSeparator.append("|");
+        }
+        sectionsSeparator.append(sections.get(size - 1));
+        return sectionsSeparator.toString();
+    }
+
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> data) {

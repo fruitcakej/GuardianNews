@@ -16,4 +16,11 @@
         android:selectAllOnFocus="true"
         android:title="@string/settings_min_articles_label" />
 
+    <MultiSelectListPreference
+        android:defaultValue="@array/cat_section_default_values"
+        android:entries="@array/cat_section_labels"
+        android:entryValues="@array/cat_section_values"
+        android:key="@string/cat_sections_key"
+        android:title="@string/article_category_label" />
+
 </PreferenceScreen>

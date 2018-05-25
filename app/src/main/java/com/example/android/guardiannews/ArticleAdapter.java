@@ -71,8 +71,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
             author.setText(articleList.getAuthor());
             String imageItemUrl = articleList.getThumbnail();
-            Glide.with(mContext).load(imageItemUrl).into(imageItem);
-
+            if (imageItemUrl == null) {
+                imageItem.setImageResource(R.drawable.no_image_available);
+            } else {
+                Glide.with(mContext).load(imageItemUrl).into(imageItem);
+            }
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,7 +85,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         }
     }
 
-    public void clearArticles() {
+        public void clearArticles() {
         articles.clear();
         notifyDataSetChanged();
     }

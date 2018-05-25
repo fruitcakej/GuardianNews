@@ -158,12 +158,19 @@ public final class QueryUtils {
                 String webUrl = data.getString(TAG_WEBURL);
                 JSONObject fields = data.getJSONObject(TAG_FIELDS);
                 String headline = fields.getString(TAG_HEADLINE);
-                String thumbnail = fields.getString(TAG_THUMBNAIL);
+
+                String thumbnail = null;
+                // Catch no thumbnail errors as sort by oldest often reveals no images
+                try {
+                    thumbnail = fields.getString(TAG_THUMBNAIL);
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, "No thumbnail image received", e);
+                }
+
                 JSONArray tagsArray = data.getJSONArray(TAG_TAGS);
 
                 String author = null;
                 // Check that there is a contributor (author) array returned
-
                 if (tagsArray.length() > 0) {
                         JSONObject authorObject = tagsArray.getJSONObject(0);
 

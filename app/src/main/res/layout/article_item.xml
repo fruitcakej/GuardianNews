@@ -30,7 +30,7 @@
             android:id="@+id/imageItem"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:layout_centerVertical="true"
             android:layout_margin="@dimen/padding_16dp" />
 

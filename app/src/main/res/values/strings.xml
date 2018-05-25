@@ -23,4 +23,36 @@
     <!-- Label for order-by most recent option [CHAR LIMIT=20] -->
     <string name="settings_order_by_most_recent_label">Most Recent</string>
     <string name="settings_order_by_most_recent_value" translatable="false">newest</string>
+
+    <!-- Strings For Category selections -->
+    <string name="article_category_label">Article Categories</string>
+    <string name="cat_sections_key" translatable="false">section</string>
+     <string name="uk_news_label">UK News</string>
+    <string name="world_label">World</string>
+    <string name="technology_label">Technology</string>
+    <string name="politics_label">Politics</string>
+    <string name="business_label">Business</string>
+    <string name="sport_label">Sport</string>
+    <string name="education_label">Education</string>
+    <string name="fashion_label">Fashion</string>
+    <string name="travel_label">Travel</string>
+    <string name="music_label">Music</string>
+    <string name="culture_label">Culture</string>
+
+    <string name="uk_news_value">uk-news</string>
+    <string name="world_value">world</string>
+    <string name="technology_value">technology</string>
+    <string name="politics_value">politics</string>
+    <string name="business_value">business</string>
+    <string name="sport_value">sport</string>
+    <string name="education_value">education</string>
+    <string name="fashion_value">fashion</string>
+    <string name="travel_value">travel</string>
+    <string name="music_value">music</string>
+    <string name="culture_value">culture</string>
+
+
+
+
+
 </resources>

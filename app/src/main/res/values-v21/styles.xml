@@ -10,7 +10,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">#000000</item>/>
+        <item name="android:background">#000000</item>
     </style>
 
     <style name="AppTheme.NoActionBar" >
