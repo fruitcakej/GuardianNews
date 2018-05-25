@@ -199,29 +199,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new ArticleLoader(this, uriBuilder.toString());
     }
 
-    private static ArrayList<String> getCategories(Context context) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ArrayList<String> sectionsArray = sharedPrefs.getStringSet(context.getString(R.string.cat_sections_key),
-                Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
-
-        if (sectionsArray.isEmpty()) {
-            ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
-            sectionsArray.addAll(cat_defaults);
+    private String sectionsFormatted (Context context) {
+        StringBuilder sb = new StringBuilder();
+        String delim = "";
+        ArrayList<String> list = getData(context);
+        for (String s : list)
+        {
+            sb.append(delim);
+            sb.append(s);
+            delim = "|";
         }
-        return sectionsArray;
+        return sb.toString();
     }
 
+    private ArrayList<String> getData (Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        ArrayList<String> sectionsArray = sharedPrefs.getString(context.getString(R.string.cat_sections_key),
+                Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
 
-    private static String sectionsFormatted(Context context) {
-        StringBuilder sectionsSeparator = new StringBuilder();
-        ArrayList<String> sections = getCategories(context);
-        int size = sections.size();
-        for (int i = 0; i < size - 1; i++) {
-            sectionsSeparator.append(sections.get(i));
-            sectionsSeparator.append("|");
-        }
-        sectionsSeparator.append(sections.get(size - 1));
-        return sectionsSeparator.toString();
+        return sectionsArray;
     }
 
 
