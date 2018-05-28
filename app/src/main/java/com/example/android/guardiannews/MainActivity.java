@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Append query parameter and its value. For example, the `format=json`
         uriBuilder.appendQueryParameter("section", sectionsFormatted(getApplicationContext()));
+//        uriBuilder.appendQueryParameter("section", "technology");
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("show-fields", "headline,thumbnail");
         uriBuilder.appendQueryParameter("show-tags", "contributor");
@@ -201,10 +202,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     // Info from https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
-    
+
     private String sectionsFormatted (Context context) {
         StringBuilder sb = new StringBuilder();
-        String delim = "";
+        String delim = ",";
         ArrayList<String> list = getData(context);
         for (String s : list)
         {
@@ -216,9 +217,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private ArrayList<String> getData (Context context) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ArrayList<String> sectionsArray = sharedPrefs.getString(context.getString(R.string.cat_sections_key),
-                Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String serialized = prefs.getString(R.string.cat_sections_key, null);
+        ArrayList<String> sectionsArray = new ArrayList<>(Arrays.asList(android.text.TextUtils.split(serialized, ",")));
+
 
         return sectionsArray;
     }

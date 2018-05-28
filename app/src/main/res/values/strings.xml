@@ -27,7 +27,7 @@
     <!-- Strings For Category selections -->
     <string name="article_category_label">Article Categories</string>
     <string name="cat_sections_key" translatable="false">section</string>
-     <string name="uk_news_label">UK News</string>
+    <string name="uk_news_label">UK News</string>
     <string name="world_label">World</string>
     <string name="technology_label">Technology</string>
     <string name="politics_label">Politics</string>

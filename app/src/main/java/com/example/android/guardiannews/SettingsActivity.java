@@ -7,6 +7,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -29,8 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
 
-            Preference category = findPreference(getString(R.string.cat_sections_key));
-            bindPreferenceSummaryToValue(category);
+//            Preference category = findPreference(getString(R.string.cat_sections_key));
+//            bindSectionsSummary(category);
         }
 
         @Override
@@ -54,6 +56,13 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
             String preferenceString = preferences.getString(preference.getKey(), "");
             onPreferenceChange(preference, preferenceString);
+        }
+
+        private void bindSectionsSummary(Preference preference) {
+             preference.setOnPreferenceChangeListener(this);
+             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
+             String preferenceString = preferences.getString(preference.getKey(), TextUtils.join(",", new Preference[]{preference}));
+             onPreferenceChange(preference, preferenceString);
         }
 
     }
