@@ -221,7 +221,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         String serialized = prefs.getString(R.string.cat_sections_key, null);
         ArrayList<String> sectionsArray = new ArrayList<>(Arrays.asList(android.text.TextUtils.split(serialized, ",")));
-
+        if (sectionsArray.isEmpty()) {
+            ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
+            sectionsArray.addAll(cat_defaults);
+        }
 
         return sectionsArray;
     }
