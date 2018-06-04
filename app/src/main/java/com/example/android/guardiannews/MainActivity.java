@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -17,7 +18,6 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -171,11 +172,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
 
-//        String section = sharedPrefs.getString(
-//                getString(R.string.cat_sections_key),
-//                String.valueOf(R.array.cat_section_default_values));  // Not working as is array not string?
-
-
         // parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(API_URL);
 
@@ -205,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private String sectionsFormatted (Context context) {
         StringBuilder sb = new StringBuilder();
-        String delim = ",";
+        String delim = "";
         ArrayList<String> list = getData(context);
         for (String s : list)
         {
@@ -218,9 +214,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private ArrayList<String> getData (Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        ArrayList<String> sectionsArray = new ArrayList<>();
 
-        String serialized = prefs.getString(R.string.cat_sections_key, null);
-        ArrayList<String> sectionsArray = new ArrayList<>(Arrays.asList(android.text.TextUtils.split(serialized, ",")));
+        sectionsArray.add(prefs.getString(context.getString(R.string.cat_sections_key), null));
+
         if (sectionsArray.isEmpty()) {
             ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
             sectionsArray.addAll(cat_defaults);
