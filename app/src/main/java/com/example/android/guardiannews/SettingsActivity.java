@@ -35,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
             bindPreferenceSummaryToValue(orderBy);
 
             Preference category = findPreference(getString(R.string.cat_sections_key));
-            saveCatData(category);   // Need to save this separately
+            saveCatData(category);   // Needed to save this separately
         }
 
         @Override
@@ -69,10 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putStringSet(String.valueOf(categories), cat_defaults);
             editor.apply();
-            // Update the Category labels with selected items (or defaults)
+            // Update the Category label with selected items (or defaults)
             preference.setSummary(String.valueOf(categories));
-
         }
     }
-
 }

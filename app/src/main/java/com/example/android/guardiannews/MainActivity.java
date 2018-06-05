@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_recycler);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);   // (Use toolbarmain as per https://guides.codepath.com/android/using-the-app-toolbar
+        // (Use toolbarmain as per https://guides.codepath.com/android/using-the-app-toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         try {
@@ -180,13 +180,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         // Append query parameter and its value. For example, the `format=json`
-        uriBuilder.appendQueryParameter("section", sectionsFormatted(getApplicationContext()));
-        uriBuilder.appendQueryParameter("format", "json");
-        uriBuilder.appendQueryParameter("show-fields", "headline,thumbnail");
-        uriBuilder.appendQueryParameter("show-tags", "contributor");
-        uriBuilder.appendQueryParameter("page-size", pageSize);
-        uriBuilder.appendQueryParameter("order-by", orderBy);
-        uriBuilder.appendQueryParameter("api-key", "test");
+        uriBuilder.appendQueryParameter(getString(R.string.section_uri), sectionsFormatted(getApplicationContext()));
+        uriBuilder.appendQueryParameter(getString(R.string.format), getString(R.string.json));
+        uriBuilder.appendQueryParameter(getString(R.string.showfields), getString(R.string.headline_thumbnail));
+        uriBuilder.appendQueryParameter(getString(R.string.showtags), getString(R.string.contributor));
+        uriBuilder.appendQueryParameter(getString(R.string.pagesize), pageSize);
+        uriBuilder.appendQueryParameter(getString(R.string.orderby), orderBy);
+        uriBuilder.appendQueryParameter(getString(R.string.apikey), getString(R.string.apikeyValue));
 
         // Return the completed uri i.e. (With 3 default categories set in arrays.xml)
         // Separator is | symbol.
@@ -195,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         return new ArticleLoader(this, uriBuilder.toString());
     }
-
 
     // Info from https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
 
@@ -226,14 +225,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         }
 
-        // If no selections made, ie first launch, then send the default categories for the url builder
+        // If no selection's made, ie first launch, then return the default categories for the url builder
         if (sectionsArray.isEmpty()) {
             ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
             sectionsArray.addAll(cat_defaults);
         }
         return sectionsArray;
     }
-
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> data) {

@@ -22,6 +22,7 @@ import java.util.List;
 
 public final class QueryUtils {
 
+    // Constant fields for json parsing
     private static final String LOG_TAG = QueryUtils.class.getName();
     private static final String TAG_RESPONSE = "response";
     private static final String TAG_RESULTS = "results";
