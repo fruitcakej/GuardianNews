@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         }
 
-        // If no selections made ie first launch then send the default categories for the url builder
+        // If no selections made, ie first launch, then send the default categories for the url builder
         if (sectionsArray.isEmpty()) {
             ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
             sectionsArray.addAll(cat_defaults);
