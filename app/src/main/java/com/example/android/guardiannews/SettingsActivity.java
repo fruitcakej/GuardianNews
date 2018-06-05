@@ -1,12 +1,15 @@
 package com.example.android.guardiannews;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -31,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
             bindPreferenceSummaryToValue(orderBy);
 
             Preference category = findPreference(getString(R.string.cat_sections_key));
-            bindPreferenceSummaryToValue(category);
+            saveCatData(category);   // Need to save this separately
         }
 
         @Override
@@ -56,6 +59,19 @@ public class SettingsActivity extends AppCompatActivity {
             String preferenceString = preferences.getString(preference.getKey(), "");
             onPreferenceChange(preference, preferenceString);
         }
+
+        private void saveCatData (Preference preference) {
+            preference.setOnPreferenceChangeListener(this);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
+            Set<String> set = new HashSet<>();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putStringSet(getString(R.string.cat_sections_key), set);
+            editor.commit();
+        }
+
+
+
+
     }
 
 }
