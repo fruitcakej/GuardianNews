@@ -47,7 +47,18 @@ public class SettingsActivity extends AppCompatActivity {
                     CharSequence[] labels = listPreference.getEntries();
                     preference.setSummary(labels[prefIndex]);
                 }
-            } else {
+            }
+//            else if (preference instanceof MultiSelectListPreference) {
+//
+//                MultiSelectListPreference multiSelectListPreference = (MultiSelectListPreference) preference;
+//                int prefIndex = multiSelectListPreference.findIndexOfValue(stringValue);
+//                if (prefIndex >= 0) {
+//                    CharSequence[] labels = multiSelectListPreference.getEntries();
+//                    preference.setSummary(labels[prefIndex]);
+//                }
+//            }  // doesn't seem to make any difference this 'else if'
+
+            else {
                 preference.setSummary(stringValue);
             }
             return true;
@@ -67,6 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putStringSet(getString(R.string.cat_sections_key), set);
             editor.commit();
+            onPreferenceChange(preference, getString(R.string.cat_sections_key));
         }
 
 
