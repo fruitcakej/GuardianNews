@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,25 +41,14 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
-            if (preference instanceof ListPreference ) {
+            if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;
                 int prefIndex = listPreference.findIndexOfValue(stringValue);
                 if (prefIndex >= 0) {
                     CharSequence[] labels = listPreference.getEntries();
                     preference.setSummary(labels[prefIndex]);
                 }
-            }
-//            else if (preference instanceof MultiSelectListPreference) {
-//
-//                MultiSelectListPreference multiSelectListPreference = (MultiSelectListPreference) preference;
-//                int prefIndex = multiSelectListPreference.findIndexOfValue(stringValue);
-//                if (prefIndex >= 0) {
-//                    CharSequence[] labels = multiSelectListPreference.getEntries();
-//                    preference.setSummary(labels[prefIndex]);
-//                }
-//            }  // doesn't seem to make any difference this 'else if'
-
-            else {
+            } else {
                 preference.setSummary(stringValue);
             }
             return true;
@@ -71,19 +61,16 @@ public class SettingsActivity extends AppCompatActivity {
             onPreferenceChange(preference, preferenceString);
         }
 
-        private void saveCatData (Preference preference) {
+        private void saveCatData(Preference preference) {
             preference.setOnPreferenceChangeListener(this);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-            Set<String> set = new HashSet<>();
+            Set<String> cat_defaults = new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.cat_section_default_values)));
+            Set<String> categories = preferences.getStringSet(getString(R.string.cat_sections_key), cat_defaults);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putStringSet(getString(R.string.cat_sections_key), set);
-            editor.commit();
-            onPreferenceChange(preference, getString(R.string.cat_sections_key));
+            editor.putStringSet(String.valueOf(categories), cat_defaults);
+            editor.apply();
+            onPreferenceChange(preference, getString(R.string.cat_sections_key));  // Not currently showing the (value of) selected categories
         }
-
-
-
-
     }
 
 }
