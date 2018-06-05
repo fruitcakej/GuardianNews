@@ -33,6 +33,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Article>>,
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView mEmptyTextView;
     private ImageView noData;
     RecyclerView recyclerView;
+    SharedPreferences sharedPrefs;
 
     /**
      * Adapter for the list of articles
@@ -115,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.i(LOG_TAG, "Calling initLoader()");
 
         // Obtain a reference to the SharedPreferences file for this app
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         // And register to be notified of preference changes
         // So we know when the user has adjusted the query settings
-        prefs.registerOnSharedPreferenceChangeListener(this);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this);
 
         //Check for internet connectivity
         ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -200,9 +203,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // Info from https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
 
     private String sectionsFormatted (Context context) {
+        ArrayList<String> list = getData(context);
+
         StringBuilder sb = new StringBuilder();
         String delim = "";
-        ArrayList<String> list = getData(context);
+
         for (String s : list)
         {
             sb.append(delim);
@@ -216,13 +221,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         ArrayList<String> sectionsArray = new ArrayList<>();
 
-        sectionsArray.add(prefs.getString(context.getString(R.string.cat_sections_key), null));
+        Set<String> options = prefs.getStringSet(getString(R.string.cat_sections_key), null);
+
+//        Log.d(LOG_TAG, "multi list option = " + options);
+
+        if(options != null ) {
+            for(String s: options) {
+                Log.d(TAG, "option  :  " + s);
+                sectionsArray = new ArrayList<>(options);
+            }
+        }
 
         if (sectionsArray.isEmpty()) {
             ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
             sectionsArray.addAll(cat_defaults);
         }
-
         return sectionsArray;
     }
 
