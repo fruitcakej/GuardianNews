@@ -181,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Append query parameter and its value. For example, the `format=json`
         uriBuilder.appendQueryParameter("section", sectionsFormatted(getApplicationContext()));
-//        uriBuilder.appendQueryParameter("section", "technology");
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("show-fields", "headline,thumbnail");
         uriBuilder.appendQueryParameter("show-tags", "contributor");
@@ -220,8 +219,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ArrayList<String> sectionsArray = new ArrayList<>();
         Set<String> options = sharedPrefs.getStringSet(getString(R.string.cat_sections_key), null);
 
-//        Log.d(LOG_TAG, "multi list option = " + options);
-
         if(options != null ) {
             for(String s: options) {
                 Log.d(TAG, "option  :  " + s);
@@ -229,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         }
 
+        // If no selections made ie first launch then send the default categories for the url builder
         if (sectionsArray.isEmpty()) {
             ArrayList<String> cat_defaults = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.cat_section_default_values)));
             sectionsArray.addAll(cat_defaults);

@@ -69,7 +69,11 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putStringSet(String.valueOf(categories), cat_defaults);
             editor.apply();
-            
+
+            // Not currently showing the (value of) selected categories
+            if (preferences.equals(cat_defaults)) {
+                onPreferenceChange(preference, Arrays.asList(R.array.cat_section_default_values, ""));
+            } else
             onPreferenceChange(preference, getString(R.string.cat_sections_key));  // Not currently showing the (value of) selected categories
         }
     }
