@@ -164,8 +164,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Log.i(LOG_TAG, "Test OnCreateLoader() called");
 
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
         String pageSize = sharedPrefs.getString(
                 getString(R.string.settings_min_articles_key),
@@ -218,10 +216,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private ArrayList<String> getData (Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        ArrayList<String> sectionsArray = new ArrayList<>();
 
-        Set<String> options = prefs.getStringSet(getString(R.string.cat_sections_key), null);
+        ArrayList<String> sectionsArray = new ArrayList<>();
+        Set<String> options = sharedPrefs.getStringSet(getString(R.string.cat_sections_key), null);
 
 //        Log.d(LOG_TAG, "multi list option = " + options);
 
